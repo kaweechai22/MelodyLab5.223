@@ -2604,3 +2604,141 @@ main.wrap{
 
 
 /* v5.132: Sound Refraction physics fix */
+
+
+/* v5.154: Sound Refraction clean display + responsive width fix */
+#visualizer[data-viz-mode="soundRefraction"].visualizerSinglePage{
+  max-width:none !important;
+}
+#visualizer[data-viz-mode="soundRefraction"] .visualizerTemplateGrid{
+  grid-template-columns:minmax(0,1.45fr) minmax(300px,.78fr) !important;
+  gap:16px !important;
+}
+#visualizer[data-viz-mode="soundRefraction"] .templateMainViz,
+#visualizer[data-viz-mode="soundRefraction"] .templateControlViz{
+  min-width:0 !important;
+}
+#visualizer[data-viz-mode="soundRefraction"] .vizMediaFrame{
+  width:100% !important;
+  max-width:100% !important;
+}
+#visualizer[data-viz-mode="soundRefraction"] .vizMediaFrame canvas{
+  width:100% !important;
+  max-width:100% !important;
+  height:auto !important;
+  aspect-ratio:1200/440 !important;
+  min-height:330px !important;
+}
+#visualizer[data-viz-mode="soundRefraction"] .refractionModeRow select{
+  min-width:0 !important;
+  width:100% !important;
+}
+#visualizer[data-viz-mode="soundRefraction"] .refractionQuickActions{
+  display:flex !important;
+  flex-wrap:wrap !important;
+  gap:8px !important;
+}
+#visualizer[data-viz-mode="soundRefraction"] .refractionQuickActions button{
+  min-width:0 !important;
+  flex:1 1 132px !important;
+  white-space:normal !important;
+}
+
+@media(max-width:1100px){
+  #visualizer[data-viz-mode="soundRefraction"] .visualizerTemplateGrid{
+    grid-template-columns:1fr !important;
+  }
+  #visualizer[data-viz-mode="soundRefraction"] .templateControlViz{
+    max-width:100% !important;
+  }
+}
+
+@media(max-width:720px){
+  #visualizer[data-viz-mode="soundRefraction"] .sectionLead{
+    font-size:.92rem !important;
+    line-height:1.45 !important;
+  }
+  #visualizer[data-viz-mode="soundRefraction"] .neonParamRow{
+    grid-template-columns:42px minmax(0,1fr) !important;
+    grid-template-areas:
+      "icon text"
+      "icon slider"
+      "icon value" !important;
+    gap:8px 10px !important;
+    padding:13px 0 !important;
+  }
+  #visualizer[data-viz-mode="soundRefraction"] .paramIcon{grid-area:icon;width:38px !important;height:38px !important;font-size:.95rem !important;}
+  #visualizer[data-viz-mode="soundRefraction"] .paramText{grid-area:text;min-width:0 !important;}
+  #visualizer[data-viz-mode="soundRefraction"] .neonParamRow input,
+  #visualizer[data-viz-mode="soundRefraction"] .neonParamRow select,
+  #visualizer[data-viz-mode="soundRefraction"] .neonParamRow .actions,
+  #visualizer[data-viz-mode="soundRefraction"] .refractionSwapBtn{grid-area:slider;width:100% !important;}
+  #visualizer[data-viz-mode="soundRefraction"] .paramValueWrap{grid-area:value;justify-content:flex-start !important;}
+  #visualizer[data-viz-mode="soundRefraction"] .neonParamRow .valueBadge{
+    min-width:0 !important;
+    font-size:.92rem !important;
+    padding:8px 11px !important;
+  }
+  #visualizer[data-viz-mode="soundRefraction"] .vizMediaFrame canvas{
+    aspect-ratio:1200/500 !important;
+    min-height:250px !important;
+  }
+}
+
+@media(max-width:420px){
+  #visualizer[data-viz-mode="soundRefraction"] .vizMediaFrame canvas{
+    min-height:220px !important;
+    aspect-ratio:1200/560 !important;
+  }
+  #visualizer[data-viz-mode="soundRefraction"] .refractionQuickActions button{
+    flex-basis:100% !important;
+  }
+}
+
+
+/* v5.155: Sound Refraction clear mode buttons */
+#visualizer[data-viz-mode="soundRefraction"] .visuallyHiddenSelect{
+  position:absolute !important;
+  width:1px !important;
+  height:1px !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+#visualizer[data-viz-mode="soundRefraction"] .modeSegmented{
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:8px !important;
+  width:100% !important;
+}
+#visualizer[data-viz-mode="soundRefraction"] .modePill{
+  appearance:none !important;
+  border:1px solid rgba(148,163,184,.22) !important;
+  background:rgba(15,23,42,.72) !important;
+  color:#dbeafe !important;
+  border-radius:16px !important;
+  padding:12px 10px !important;
+  font-weight:900 !important;
+  line-height:1.2 !important;
+  text-align:center !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04) !important;
+}
+#visualizer[data-viz-mode="soundRefraction"] .modePill.active{
+  color:#ffffff !important;
+  border-color:rgba(34,211,238,.72) !important;
+  background:linear-gradient(135deg,rgba(29,78,216,.84),rgba(14,165,233,.78)) !important;
+  box-shadow:0 0 0 1px rgba(34,211,238,.18),0 12px 26px rgba(14,165,233,.18) !important;
+}
+#visualizer[data-viz-mode="soundRefraction"] .refractionModeRow .paramIcon{
+  font-size:.78rem !important;
+}
+#visualizer[data-viz-mode="soundRefraction"] .refractionModeRow .paramValueWrap{
+  display:none !important;
+}
+@media(max-width:720px){
+  #visualizer[data-viz-mode="soundRefraction"] .modeSegmented{
+    grid-template-columns:1fr !important;
+  }
+  #visualizer[data-viz-mode="soundRefraction"] .modePill{
+    padding:11px 12px !important;
+  }
+}

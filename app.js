@@ -339,7 +339,7 @@ function drawRebuiltTopic(ctx,c,p,w,h,mode){
     vText("vizTempTopLabel",tempTop.toFixed(0)+" °C");
     vText("vizTempBottomLabel",tempBottom.toFixed(0)+" °C");
     vText("vizAngleLabel",theta1Deg.toFixed(0)+"°");
-    vText("vizRefractionModeLabel",profile==="gradient"?"ไล่ระดับ":profile==="multilayer"?"หลายชั้น":"การหักเห");
+    vText("vizRefractionModeLabel",profile==="gradient"?"อุณหภูมิไล่ระดับ":profile==="multilayer"?"หลายชั้น":"การหักเห");
     vText("vizLayerCountLabel",`${layerCount.toFixed(0)} ชั้น`);
     vText("vizBendBoostLabel",`×${bendBoost.toFixed(1)}`);
     vText("vizTempRelationLabel",relationLabel);
@@ -484,12 +484,11 @@ function drawRebuiltTopic(ctx,c,p,w,h,mode){
       ctx.restore();
       drawBadge(xR-186, top+46, 164, 104, noRefraction?"v₁ ≈ v₂":(vTop>vBottom?"v₁ > v₂":"v₁ < v₂"), [noRefraction?"θ₂ = θ₁":(theta2Deg<theta1Deg?"θ₂ < θ₁":"θ₂ > θ₁"), `ต่างกัน ≈ ${Math.abs(theta1Deg-theta2Deg).toFixed(1)}°`, behaviorText]);
       coreMetricCard(ctx,panel.x+22,panel.y+panel.h-92,228,70,"มุมหักเห", noRefraction?"θ₂ = θ₁":`θ₂ ≈ ${theta2Deg.toFixed(1)}°`, "วัดจากเส้นแนวฉาก", "#9dffcb");
-      coreMetricCard(ctx,panel.x+262,panel.y+panel.h-92,460,70,"ข้อสรุป", noRefraction?"ไม่เกิดการหักเหสุทธิ":"เมื่อปรับ f หน้าคลื่นจะชิดหรือห่างขึ้น แต่ θ₂ ยังคงเดิมถ้าอุณหภูมิของตัวกลางไม่เปลี่ยน", "ความถี่คงเดิมขณะข้ามรอยต่อ แต่ λ เปลี่ยนตาม v", "#ff5cab");
 
     } else if(profile==="multilayer"){
       // multilayer approximation: many thin horizontal layers, each pair causes a small refraction
       const groundH = 22, skyH = bottom-top-groundH;
-      const N = Math.max(4, Math.round(layerCount));
+      const N = Math.min(6, Math.max(3, Math.round(layerCount)));
       const layerH = skyH / N;
       const tempAtFrac = frac => tempTop + (tempBottom-tempTop)*frac;
       const speedAtFrac = frac => 331 + 0.6*tempAtFrac(frac);
@@ -541,18 +540,8 @@ function drawRebuiltTopic(ctx,c,p,w,h,mode){
       ctx.save(); ctx.strokeStyle="rgba(255,92,171,.98)"; ctx.lineWidth=4.1; ctx.lineCap="round"; ctx.lineJoin="round";
       ctx.beginPath(); ctx.moveTo(displayPts[0].x, displayPts[0].y); for(let i=1;i<displayPts.length;i++) ctx.lineTo(displayPts[i].x, displayPts[i].y); ctx.stroke();
       const pA=displayPts[displayPts.length-2]||displayPts[0], pB=displayPts[displayPts.length-1]; coreArrow(ctx,pA.x,pA.y,pB.x,pB.y,"#ff5cab",4); ctx.restore();
-      // dots at interfaces + sampled local normals/angles
-      const sampleIdx=[Math.max(1,Math.floor(N*0.25)), Math.max(2,Math.floor(N*0.5)), Math.max(3,Math.floor(N*0.75))].filter((v,i,a)=>a.indexOf(v)===i && v<displayPts.length-1);
-      sampleIdx.forEach(idx=>{
-        const p=displayPts[idx];
-        coreDot(ctx,p.x,p.y,4.2,"#ffffff");
-        ctx.save(); ctx.strokeStyle="rgba(235,245,255,.68)"; ctx.setLineDash([6,6]); ctx.lineWidth=1.5;
-        ctx.beginPath(); ctx.moveTo(p.x,p.y-30); ctx.lineTo(p.x,p.y+28); ctx.stroke(); ctx.setLineDash([]);
-        ctx.fillStyle="#eaf3ff"; ctx.textAlign="left"; ctx.font="bold 11px Sarabun, system-ui";
-        const prev=displayPts[idx-1].theta*180/Math.PI, next=displayPts[idx].theta*180/Math.PI;
-        ctx.fillText(`θ${idx}→θ${idx+1}: ${prev.toFixed(0)}°→${next.toFixed(0)}°`, p.x+8, p.y-8);
-        ctx.restore();
-      });
+      // local-angle labels are intentionally hidden in final display to keep the canvas clean
+      const sampleIdx=[];
       // wavefronts along selected segments
       for(let i=0;i<displayPts.length-1;i++){
         const p1=displayPts[i], p2=displayPts[i+1];
@@ -583,10 +572,7 @@ function drawRebuiltTopic(ctx,c,p,w,h,mode){
       ctx.save(); ctx.fillStyle="rgba(10,22,50,.86)"; ctx.strokeStyle="rgba(96,165,250,.34)"; roundRect(ctx,panel.x+28,panel.y+26,124,30,12); ctx.fill(); ctx.stroke(); ctx.fillStyle="#dbeafe"; ctx.font="bold 14px Sarabun, system-ui"; ctx.textAlign="center"; ctx.fillText(`f = ${freq.toFixed(0)} Hz`, panel.x+90, panel.y+46); ctx.restore();
       ctx.save(); ctx.fillStyle="rgba(13,26,53,.84)"; ctx.strokeStyle="rgba(251,191,36,.36)"; roundRect(ctx,panel.x+160,panel.y+26,174,30,12); ctx.fill(); ctx.stroke(); ctx.fillStyle="#ffd166"; ctx.font="bold 13px Sarabun, system-ui"; ctx.textAlign="center"; ctx.fillText(`ขยายภาพการเบน ×${bendBoost.toFixed(1)}`, panel.x+247, panel.y+46); ctx.restore();
       ctx.save(); ctx.font="bold 12px Sarabun, system-ui"; ctx.textAlign="left"; ctx.fillStyle="#ff8fc2"; ctx.fillText("Multi-layer Ray", startX-12, startY-18); ctx.restore();
-      const localAngles = sampleIdx.map(idx=>`${(displayPts[idx-1].theta*180/Math.PI).toFixed(0)}°→${(displayPts[idx].theta*180/Math.PI).toFixed(0)}°`);
-      drawBadge(xR-218, top+44, 196, 122, `${N} ชั้น`, [`ΔT ≈ ${((Math.abs(tempBottom-tempTop))/Math.max(N-1,1)).toFixed(1)}°C/ชั้น`, localAngles[0]||"θ เปลี่ยนทีละชั้น", localAngles[1]||"หักเหเล็กน้อย"]);
-      coreMetricCard(ctx,panel.x+22,panel.y+panel.h-92,248,70,"มุมท้องถิ่น", localAngles.join('  •  ') || "θ เปลี่ยนทีละชั้น", "แสดงการเปลี่ยนมุมเป็นคู่ ๆ ที่รอยต่อบางตำแหน่ง", "#9dffcb");
-      coreMetricCard(ctx,panel.x+282,panel.y+panel.h-92,440,70,"ข้อสรุป", bottomHotter ? "อากาศใกล้พื้นอุ่นกว่า → การหักเหเล็ก ๆ หลายครั้งรวมกันทำให้รังสีค่อย ๆ เบนขึ้น" : topHotter ? "อากาศใกล้พื้นเย็นกว่า → การหักเหเล็ก ๆ หลายครั้งรวมกันทำให้รังสีค่อย ๆ เบนลง" : "เมื่ออุณหภูมิทุกชั้นใกล้เคียงกัน แนวรังสีจะเกือบเป็นเส้นตรง", `กรณี preset นี้ใช้ประมาณ ${((Math.abs(tempBottom-tempTop))/Math.max(N-1,1)).toFixed(1)}°C ต่อชั้น และอาจขยายภาพการเบนเพื่อการสอน`, "#ff5cab");
+      drawBadge(xR-218, top+44, 196, 106, `${N} ชั้น`, [`ΔT ≈ ${((Math.abs(tempBottom-tempTop))/Math.max(N-1,1)).toFixed(1)}°C/ชั้น`, "ความถี่คงเดิม", "λ เปลี่ยนตาม v"]);
 
     } else {
       // gradient scene
@@ -636,7 +622,6 @@ function drawRebuiltTopic(ctx,c,p,w,h,mode){
       ctx.font="bold 14px Sarabun, system-ui"; ctx.fillStyle = bottomHotter ? "#ff98a8" : "#4fdcff"; ctx.fillText(bottomHotter?"บริเวณใกล้พื้นอุ่นกว่า":"บริเวณใกล้พื้นเย็นกว่า", xL+16, bottom-74); ctx.font="13px Sarabun, system-ui"; ctx.fillText(`v(bottom) ≈ ${vBottom.toFixed(1)} m/s`, xL+16, bottom-52); ctx.fillText(`λ(bottom) ≈ ${lambdaBottom.toFixed(3)} m`, xL+16, bottom-31); ctx.restore();
       ctx.save(); ctx.fillStyle="rgba(10,22,50,.86)"; ctx.strokeStyle="rgba(96,165,250,.34)"; roundRect(ctx,panel.x+28,panel.y+26,124,30,12); ctx.fill(); ctx.stroke(); ctx.fillStyle="#dbeafe"; ctx.font="bold 14px Sarabun, system-ui"; ctx.textAlign="center"; ctx.fillText(`f = ${freq.toFixed(0)} Hz`, panel.x+90, panel.y+46); ctx.restore();
       drawBadge(xR-206, top+56, 184, 108, effectivePreset==="night"?"ไล่ระดับกลางคืน":"ไล่ระดับกลางวัน", [effectivePreset==="night"?"ใกล้พื้นเย็นกว่า → เสียงค่อย ๆ เบนลง":"ใกล้พื้นอุ่นกว่า → เสียงค่อย ๆ เบนขึ้น", "ไม่มีมุมหักเหค่าเดียว"]);
-      coreMetricCard(ctx,panel.x+22,panel.y+panel.h-92,700,70,"ข้อสรุป", effectivePreset==="night" ? "แม้ปรับ f ให้หน้าคลื่นชิดขึ้นหรือห่างขึ้น แนวการเบนลงในโหมดกลางคืนยังคงเดิม" : "แม้ปรับ f ให้หน้าคลื่นชิดขึ้นหรือห่างขึ้น แนวการเบนขึ้นในโหมดกลางวันยังคงเดิม", "มุมหรือแนวการหักเหขึ้นกับความเร็วเสียง ไม่ได้ขึ้นกับความถี่", "#ff5cab");
     }
 
   } else if(mode==="soundDiffraction"){
@@ -2695,17 +2680,24 @@ function initVisualizer(){
     btn.onclick=()=>setEchoSample(btn.dataset.echoSample || "physics");
   });
   setEchoSample(vizState.echoSample || "physics");
+  function updateRefractionModeButtons(){
+    const modeEl=$("vizRefractionMode");
+    const current = modeEl ? modeEl.value : "layer";
+    document.querySelectorAll("[data-ref-mode]").forEach(btn=>{
+      const active = btn.dataset.refMode === current;
+      btn.classList.toggle("active", active);
+      btn.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+  }
   function syncRefractionControlUI(){
     const modeEl=$("vizRefractionMode"), presetEl=$("vizGradientPreset"), layerEl=$("vizLayerCount");
     if(!modeEl) return;
-    const isLayer = modeEl.value === 'layer';
-    const isGradient = modeEl.value === 'gradient';
     const isMulti = modeEl.value === 'multilayer';
-    const gradRow = presetEl ? presetEl.closest('.gradientPresetRow') : null;
     const layerRow = layerEl ? layerEl.closest('.layerCountRow') : null;
     const boostEl = $("vizBendBoost"), boostRow = boostEl ? boostEl.closest('.bendBoostRow') : null;
     const multiPresetRow = $("vizMultiDayBtn") ? $("vizMultiDayBtn").closest('.multiLayerPresetRow') : null;
     const quickRow = $("vizTowardNormalBtn") ? $("vizTowardNormalBtn").closest('.refractionQuickPresetRow') : null;
+    const gradRow = presetEl ? presetEl.closest('.gradientPresetRow') : null;
 
     const setRow = (row, show) => {
       if(!row) return;
@@ -2713,15 +2705,16 @@ function initVisualizer(){
       row.style.opacity = show ? "1" : "0.55";
     };
 
-    setRow(quickRow, isLayer);
     setRow(layerRow, isMulti);
     setRow(boostRow, isMulti);
-    setRow(multiPresetRow, isMulti);
-    setRow(gradRow, isGradient);
+    setRow(multiPresetRow, false);
+    setRow(quickRow, false);
+    setRow(gradRow, false);
 
-    if(presetEl) presetEl.disabled = !isGradient;
+    if(presetEl) presetEl.disabled = true;
     if(layerEl) layerEl.disabled = !isMulti;
     if(boostEl) boostEl.disabled = !isMulti;
+    updateRefractionModeButtons();
   }
   function applyGradientPresetUI(){
     const presetEl=$("vizGradientPreset");
@@ -2742,6 +2735,16 @@ function initVisualizer(){
     getVizParams();
     if(typeof drawVisualizer === "function") drawVisualizer();
   }
+  document.querySelectorAll("[data-ref-mode]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const modeEl=$("vizRefractionMode");
+      if(modeEl) modeEl.value = btn.dataset.refMode || "layer";
+      if($("vizGradientPreset")) $("vizGradientPreset").value = "auto";
+      syncRefractionControlUI();
+      getVizParams();
+      if(typeof drawVisualizer === "function") drawVisualizer();
+    });
+  });
   if($("vizGradientPreset")) $("vizGradientPreset").addEventListener("change", applyGradientPresetUI);
   if($("vizRefractionMode")) $("vizRefractionMode").addEventListener("change", syncRefractionControlUI);
   syncRefractionControlUI();

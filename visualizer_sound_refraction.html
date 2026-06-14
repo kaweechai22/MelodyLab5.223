@@ -1,8 +1,8 @@
-<!DOCTYPE html><html lang="th"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>MelodyLab v5.153 - Sound Refraction (การหักเหของเสียง)</title><meta name="description" content="MelodyLab ห้องทดลองเสียงและเก็บข้อมูล ด้วยมือถือ"><meta name="theme-color" content="#0f172a"><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><link rel="stylesheet" href="style.css"><meta name="melodylab-build-version" content="v5.153-sound-refraction-mode-label-short"></head><body class="detailPage page-visualizer"><header><div class="wrap nav detailNav"><button class="backBtn" onclick="location.href='visualizer.html'">←</button><a class="brand" href="index.html"><img src="icon-192.png" alt="MelodyLab"><span>Sound Refraction (การหักเหของเสียง)</span></a></div></header>
+<!DOCTYPE html><html lang="th"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>MelodyLab v5.155 - Sound Refraction (การหักเหของเสียง)</title><meta name="description" content="MelodyLab ห้องทดลองเสียงและเก็บข้อมูล ด้วยมือถือ"><meta name="theme-color" content="#0f172a"><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><link rel="stylesheet" href="style.css"><meta name="melodylab-build-version" content="v5.155-sound-refraction-mode-buttons-clean-ui"></head><body class="detailPage page-visualizer"><header><div class="wrap nav detailNav"><button class="backBtn" onclick="location.href='visualizer.html'">←</button><a class="brand" href="index.html"><img src="icon-192.png" alt="MelodyLab"><span>Sound Refraction (การหักเหของเสียง)</span></a></div></header>
 <main class="wrap detailMain" data-current="visualizer">
 <section class="section activeDetail visualizerSinglePage visualizerTemplatePage longitudinalFocusPage rebuiltTopicPage" id="visualizer" data-viz-mode="soundRefraction">
   <div class="sectionHead templateHead">
-    <div><h2>Sound Refraction (การหักเหของเสียง)</h2><p class="sectionLead">จำลองการหักเหของเสียง 3 รูปแบบ: แบบรอยต่อสองชั้น, แบบหลายชั้น, และแบบอุณหภูมิไล่ระดับต่อเนื่อง</p></div>
+    <div><h2>Sound Refraction (การหักเหของเสียง)</h2><p class="sectionLead">จำลองการหักเหของเสียง 3 โหมด: การหักเห, การหักเหแบบหลายชั้น, และการหักเหแบบอุณหภูมิไล่ระดับต่อเนื่อง</p></div>
   </div>
   <div class="visualizerTemplateGrid longitudinalFocusGrid">
     <div class="card mainViz templateMainViz longitudinalMainViz">
@@ -21,7 +21,7 @@
         <div class="detailsBody"><div class="templateUnderCanvas explainGrid">
           <div class="templateInsightCard"><div class="insightTitle">สาระสำคัญที่ควรสังเกต</div><ul>
                 <li>ความถี่ของเสียงคงเดิม แต่ความยาวคลื่นเปลี่ยนตามความเร็วเสียงในแต่ละบริเวณ</li>
-                <li>แบบรอยต่อสองชั้นใช้ดูมุมตกกระทบและมุมหักเหจากเส้นแนวฉาก</li>
+                <li>โหมดการหักเหใช้ดูมุมตกกระทบและมุมหักเหจากเส้นแนวฉาก</li>
                 <li>แบบหลายชั้นแสดงการหักเหเล็ก ๆ หลายครั้งต่อเนื่องกัน</li>
                 <li>แบบอุณหภูมิไล่ระดับต่อเนื่องแสดงแนวโน้มการเบนของเสียงเมื่ออุณหภูมิเปลี่ยนอย่างต่อเนื่อง</li>
             </ul></div>
@@ -45,7 +45,7 @@
       </details>
     </div>
     <div class="card controlViz templateControlViz longitudinalControlViz neonControlViz">
-      <div class="panelTitleStack"><h3>Parameters (ตัวแปรควบคุม)</h3><p class="panelSubtext">เลือกโหมดให้ตรงกิจกรรม: รอยต่อสองชั้น / หลายชั้น / อุณหภูมิไล่ระดับต่อเนื่อง</p></div>
+      <div class="panelTitleStack"><h3>Parameters (ตัวแปรควบคุม)</h3><p class="panelSubtext">เลือกโหมดให้ตรงกิจกรรม: การหักเห / การหักเหแบบหลายชั้น / การหักเหแบบอุณหภูมิไล่ระดับต่อเนื่อง</p></div>
       <div class="field richField neonParamRow">
         <div class="paramIcon">f</div>
         <div class="paramText"><label>Frequency f</label><small>ความถี่คงที่ในทั้งสองบริเวณ</small></div>
@@ -65,19 +65,24 @@
         <div class="paramValueWrap"><span id="vizTempBottomLabel" class="valueBadge">0 °C</span></div>
       </div>
       <div class="field richField neonParamRow refractionModeRow">
-        <div class="paramIcon">ชั้น</div>
-        <div class="paramText"><label>โหมดการหักเห</label><small>เลือก 1 ใน 3 รูปแบบการจำลอง</small></div>
-        <select id="vizRefractionMode">
+        <div class="paramIcon">โหมด</div>
+        <div class="paramText"><label>โหมดการหักเห</label><small>เลือกโหมดจากปุ่มด้านล่างให้เห็นชัด</small></div>
+        <select id="vizRefractionMode" class="visuallyHiddenSelect" aria-label="โหมดการหักเห">
           <option value="layer" selected>การหักเห</option>
           <option value="multilayer">การหักเหแบบหลายชั้น</option>
           <option value="gradient">การหักเหแบบอุณหภูมิไล่ระดับต่อเนื่อง</option>
         </select>
-        <div class="paramValueWrap"><span id="vizRefractionModeLabel" class="valueBadge">แบ่งชั้น</span></div>
+        <div class="modeSegmented refractionModeButtons" role="group" aria-label="เลือกโหมดการหักเห">
+          <button id="vizModeLayerBtn" type="button" data-ref-mode="layer" class="modePill active" aria-pressed="true">การหักเห</button>
+          <button id="vizModeMultiBtn" type="button" data-ref-mode="multilayer" class="modePill" aria-pressed="false">หลายชั้น</button>
+          <button id="vizModeGradientBtn" type="button" data-ref-mode="gradient" class="modePill" aria-pressed="false">อุณหภูมิไล่ระดับ</button>
+        </div>
+        <div class="paramValueWrap"><span id="vizRefractionModeLabel" class="valueBadge">การหักเห</span></div>
       </div>
             <div class="field richField neonParamRow layerCountRow">
         <div class="paramIcon">N</div>
-        <div class="paramText"><label>Layers</label><small>จำนวนชั้นย่อยสำหรับแบบหลายชั้นต่อเนื่อง</small></div>
-        <input id="vizLayerCount" type="range" min="4" max="16" step="1" value="6">
+        <div class="paramText"><label>Layers</label><small>จำนวนชั้นย่อย 3–6 ชั้น</small></div>
+        <input id="vizLayerCount" type="range" min="3" max="6" step="1" value="6">
         <div class="paramValueWrap"><span id="vizLayerCountLabel" class="valueBadge">6 ชั้น</span></div>
       </div>
       <div class="field richField neonParamRow bendBoostRow">
@@ -85,34 +90,6 @@
         <div class="paramText"><label>Bend Visibility</label><small>ขยายภาพการเบนเฉพาะโหมดหลายชั้น เพื่อให้เห็นทิศทางชัดขึ้น</small></div>
         <input id="vizBendBoost" type="range" min="1" max="5" step="0.5" value="2.5">
         <div class="paramValueWrap"><span id="vizBendBoostLabel" class="valueBadge">×2.5</span></div>
-      </div>
-      <div class="field richField neonParamRow multiLayerPresetRow">
-        <div class="paramIcon">ML</div>
-        <div class="paramText"><label>6-layer 5°C Preset</label><small>ตัวอย่างหลายชั้น 6 ชั้น โดยต่างกันชั้นละ 5°C</small></div>
-        <div class="actions refractionQuickActions">
-          <button id="vizMultiDayBtn" class="secondary refractionPresetBtn" type="button">6 ชั้น กลางวัน</button>
-          <button id="vizMultiNightBtn" class="secondary refractionPresetBtn" type="button">6 ชั้น กลางคืน</button>
-        </div>
-        <div class="paramValueWrap"><span id="vizMultiPresetLabel" class="valueBadge">Preset 5°C</span></div>
-      </div>
-<div class="field richField neonParamRow refractionQuickPresetRow">
-        <div class="paramIcon">θ</div>
-        <div class="paramText"><label>Quick Compare</label><small>ตั้งค่าตัวอย่างให้เห็นเข้าหา/ออกจาก Normal ทันที</small></div>
-        <div class="actions refractionQuickActions">
-          <button id="vizTowardNormalBtn" class="secondary refractionPresetBtn" type="button">เข้าหา Normal</button>
-          <button id="vizAwayNormalBtn" class="secondary refractionPresetBtn" type="button">ออกจาก Normal</button>
-        </div>
-        <div class="paramValueWrap"><span id="vizBendPresetLabel" class="valueBadge">ตัวอย่างเร็ว</span></div>
-      </div>
-      <div class="field richField neonParamRow gradientPresetRow">
-        <div class="paramIcon">☀</div>
-        <div class="paramText"><label>Gradient Preset</label><small>ใช้เฉพาะโหมดเกรเดียน เพื่อดูตัวอย่างกลางวันและกลางคืน</small></div>
-        <select id="vizGradientPreset">
-          <option value="auto" selected>อัตโนมัติตามอุณหภูมิ</option>
-          <option value="day">กลางวัน (Day)</option>
-          <option value="night">กลางคืน (Night)</option>
-        </select>
-        <div class="paramValueWrap"><span id="vizGradientPresetLabel" class="valueBadge">อัตโนมัติ</span></div>
       </div>
       <div class="field richField neonParamRow tempSwapRow">
         <div class="paramIcon">↕</div>
