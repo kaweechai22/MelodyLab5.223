@@ -1,4 +1,4 @@
-const CACHE_NAME='melodylab-v5-265-doppler-sprite-redesign';
+const CACHE_NAME='melodylab-v5-267-full-app-ui-polish';
 const ASSETS=[
   "./",
   "index.html",

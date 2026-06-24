@@ -1,7 +1,9 @@
-# MelodyLab v5.265 Doppler Sprite Redesign
+# MelodyLab v5.267 Full App UI Polish
 
-ปรับรูปรถและผู้ฟังให้ใกล้ภาพ mockup มากขึ้น:
-- เพิ่ม asset รถลำโพงและผู้ฟังซ้าย/ขวาจากภาพต้นแบบ
-- Canvas ใช้ sprite เหล่านี้แทนรูป vector แบบเดิม
-- คงสูตรและการทำงาน Doppler จาก v5.264
-- เพิ่มไฟล์ core สำหรับอัป GitHub: style.css, app.js, manifest.json, sw.js
+ปรับทั้งแอปจาก v5.266:
+- กู้และปรับรูปแบบรวมของหน้าหลักและหัวข้อย่อยให้กลับมาเป็นธีม MelodyLab เดียวกัน
+- ปรับ home menu, visualizer menu, cards, controls, tables, forms, buttons ให้สม่ำเสมอ
+- ปรับ responsive/mobile ให้เมนูและหัวข้อย่อยไม่เพี้ยน ไม่เป็นลิงก์ใหญ่ล้นจอ
+- ลดขนาดแอนิเมชัน Doppler บนมือถือและจัดสมดุลภาพ/ปุ่มใหม่
+- คง sprite รถและผู้ฟังของ Doppler จาก v5.265
+- อัปเดต service worker cache เป็น v5.267
